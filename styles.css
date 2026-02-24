@@ -526,7 +526,7 @@ header h1 {
   padding-right: 1em;
   color: #000000b3;
   box-shadow: inset 0 0 10px #00000030;
-  overflow: hidden;
+  overflow: visible;  /* TMGS2: Allow expansion for unlimited lines */
 }
 
 .game-text {
@@ -534,15 +534,15 @@ header h1 {
   padding-right: 0.25em;
   padding-bottom: 3px;
   width: 22.3em;  /* Same as game */
-  overflow: hidden;
+  overflow: visible;  /* TMGS2: Allow expansion for unlimited lines */
 }
 
 .game-line {
   border-bottom: 2px solid #0000003d;
   padding-top: 3px;
   min-height: 1.3em;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  overflow: visible;  /* TMGS2: Show full text */
+  text-overflow: clip;
 }
 
 .game-line:last-child {
@@ -554,29 +554,6 @@ header h1 {
   font-size: 0.85rem;
   color: var(--text-muted);
   margin-top: 10px;
-}
-
-/* Y files use larger font (35pt vs 31pt default) - ratio 1.129 */
-.game-box.y-file {
-  font-size: 13pt;  /* 11.5pt * 1.129 for Y files */
-}
-
-.game-box.y-file .game-speaker {
-  font-size: 13pt;
-}
-
-/* Y files can show unlimited lines - allow overflow */
-.game-box.y-file .game-contents {
-  overflow: visible;
-}
-
-.game-box.y-file .game-text {
-  overflow: visible;
-}
-
-.game-box.y-file .game-line {
-  overflow: visible;
-  text-overflow: clip;
 }
 
 /* Loading Overlay */

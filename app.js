@@ -313,9 +313,6 @@ function openCorrectionModal(index) {
 function updateGamePreview() {
   if (!selectedDialogue) return;
   
-  // Check if this is a Y file (supports unlimited lines)
-  const isYFile = currentFile && currentFile.path && currentFile.path.startsWith('y/');
-  
   const text = elements.correctedText.value;
   const allLines = text.split('\n');
   const speaker = selectedDialogue.speaker || '';
@@ -323,16 +320,15 @@ function updateGamePreview() {
   // Update speaker
   elements.previewSpeaker.textContent = speaker;
   
-  // For Y files show all lines, for regular files limit to 3
-  const linesToShow = isYFile ? allLines : allLines.slice(0, 3);
-  const minLines = isYFile ? allLines.length : 3;
+  // TMGS2: Show all lines (no limit - textbox expands infinitely)
+  const linesToShow = [...allLines];
   
-  // Ensure we have enough lines for display
-  while (linesToShow.length < minLines) {
+  // Ensure at least one line for display
+  if (linesToShow.length === 0) {
     linesToShow.push('');
   }
   
-  // Clear existing lines and rebuild for Y files (dynamic line count)
+  // Clear existing lines and rebuild
   elements.previewText.innerHTML = '';
   linesToShow.forEach((lineText, i) => {
     const lineEl = document.createElement('div');
@@ -342,16 +338,9 @@ function updateGamePreview() {
     elements.previewText.appendChild(lineEl);
   });
   
-  // Update hint based on line count (Y files support unlimited lines)
-  if (allLines.length > 3 && !isYFile) {
-    elements.previewHint.innerHTML = `<span style="color: #ff6600;">Warning: ${allLines.length} lines! Only 3 fit per text box.</span>`;
-  } else if (isYFile) {
-    elements.previewHint.textContent = `${allLines.length} lines (Y file - no limit)`;
-    elements.previewHint.style.color = '';
-  } else {
-    elements.previewHint.textContent = `${allLines.length}/3 lines`;
-    elements.previewHint.style.color = '';
-  }
+  // Show line count (no limit in TMGS2)
+  elements.previewHint.textContent = `${allLines.length} line${allLines.length !== 1 ? 's' : ''}`;
+  elements.previewHint.style.color = '';
 }
 
 function closeModal() {
@@ -387,12 +376,13 @@ async function submitCorrection() {
   let correctedRaw;
   
   // Escape the corrected text for use in C string
-  // Escape backslashes and quotes, but keep actual newlines as-is (file format uses real newlines)
+  // TMGS2 uses explicit \n in strings, not actual newlines
   const escapedCorrection = correctedText
     .replace(/\\/g, '\\\\')   // Escape backslashes first
-    .replace(/"/g, '\\"');    // Escape quotes
+    .replace(/"/g, '\\"')     // Escape quotes
+    .replace(/\r?\n/g, '\\n'); // Convert actual newlines to \n escape sequences
   
-  if (selectedDialogue.type === 'MsgSel' || selectedDialogue.type === 'MsgSelRand') {
+  if (selectedDialogue.type === 'Message_MsgSel' || selectedDialogue.type === 'Message_MsgSelRand') {
     // For MsgSel/MsgSelRand, replace just the specific option within the raw string
     // The rawOption contains the original text with escapes as it appears in the file
     correctedRaw = originalRaw.replace(`"${selectedDialogue.rawOption}"`, `"${escapedCorrection}"`);
