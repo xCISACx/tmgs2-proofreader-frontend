@@ -19,9 +19,9 @@
     <!-- Search Section -->
     <section class="search-section">
       <div class="search-box">
-        <input 
-          type="text" 
-          id="search-input" 
+        <input
+          type="text"
+          id="search-input"
           placeholder="Type the dialogue line you're looking for..."
           autocomplete="off"
         >
@@ -32,58 +32,9 @@
 
     <!-- Results Section -->
     <section id="results-section" class="hidden">
-      <h2>Search Results</h2>
+      <h2 id="results-heading">Search Results</h2>
       <div id="results-list"></div>
     </section>
-
-
-    <!-- Correction Modal -->
-    <div id="correction-modal" class="modal hidden">
-      <div class="modal-content">
-        <h2>Submit Correction</h2>
-        <div class="modal-body">
-          <div class="field">
-            <label>Original Text:</label>
-            <div id="original-text" class="text-box readonly"></div>
-          </div>
-          <div class="field">
-            <label>Corrected Text:</label>
-            <textarea id="corrected-text" class="text-box editable" rows="4" placeholder="Use line breaks to control text flow"></textarea>
-          </div>
-          
-          <!-- Game-style Preview -->
-          <div class="field">
-            <label>In-Game Preview:</label>
-            <div class="game-preview">
-              <div class="game-box">
-                <div class="game-speaker" id="preview-speaker">Speaker</div>
-                <div class="game-contents">
-                  <div class="game-text" id="preview-text">
-                    <div class="game-line"></div>
-                    <div class="game-line"></div>
-                    <div class="game-line"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <p class="preview-hint" id="preview-hint">Text box expands for more lines.</p>
-          </div>
-          
-          <div class="field">
-            <label>Your Name (for PR attribution):</label>
-            <input type="text" id="submitter-name" placeholder="e.g., John D." maxlength="50">
-          </div>
-          <div class="field">
-            <label>Description (optional):</label>
-            <input type="text" id="correction-description" placeholder="Brief explanation of the fix...">
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button id="cancel-correction" class="btn secondary">Cancel</button>
-          <button id="submit-correction" class="btn primary">Submit Pull Request</button>
-        </div>
-      </div>
-    </div>
 
     <!-- Loading Overlay -->
     <div id="loading" class="loading-overlay hidden">
